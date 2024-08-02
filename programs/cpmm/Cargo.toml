@@ -1,0 +1,38 @@
+[package]
+name = "degen-fund-cpmm"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "degen_fund_cpmm"
+
+[features]
+default = ["devnet"]
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+devnet = []
+
+[dependencies]
+anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.30.1", features = ["metadata"] }
+integer-sqrt = "0.1.5"
+
+raydium-cpmm-cpi = { path = "../../raydium-cpmm-cpi", features = [
+    "devnet",
+    "cpi",
+] }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+overflow-checks = true
+[profile.release.build-override]
+opt-level = 3
+incremental = false
+codegen-units = 1
